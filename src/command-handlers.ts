@@ -1,4 +1,5 @@
 import { WebSocket } from 'ws'
+import { subscribeClient, unsubscribeClient } from './subscription-manager'
 
 export function handleSubscribe(args: string[], ws: WebSocket): void {
     if (args.length < 1) {
@@ -6,8 +7,8 @@ export function handleSubscribe(args: string[], ws: WebSocket): void {
         return
     }
     const ticker = args[0].toUpperCase()
+    subscribeClient(ticker, ws)
     ws.send(`Subscribed to ${ticker}`)
-    // TODO: Add ticker to the client's subscription list and start sending ticker updates.
 }
 
 export function handleUnsubscribe(args: string[], ws: WebSocket): void {
@@ -16,8 +17,8 @@ export function handleUnsubscribe(args: string[], ws: WebSocket): void {
         return
     }
     const ticker = args[0].toUpperCase()
+    unsubscribeClient(ticker, ws)
     ws.send(`Unsubscribed from ${ticker}`)
-    // TODO: Remove ticker from the client's subscription list.
 }
 
 export function handleBuy(args: string[], ws: WebSocket): void {
