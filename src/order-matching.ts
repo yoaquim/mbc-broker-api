@@ -1,10 +1,11 @@
-import WebSocket from 'ws'
+import { sendMessage, ExecutionMessagePayload } from './utils/messenger'
+import { Client } from './client-manager'
 
-type OrderType = 'BUY' | 'SELL'
+export type OrderType = 'BUY' | 'SELL'
 
 export interface Order {
     id: string;
-    client: WebSocket;
+    client: Client;
     ticker: string;
     quantity: number;
     type: OrderType;
@@ -30,19 +31,17 @@ interface NotificationData {
 const BUY_ORDERS: Map<string, Order[]> = new Map()
 const SELL_ORDERS: Map<string, Order[]> = new Map()
 
-function notifyClients(sourceClient: WebSocket, targetClient: WebSocket, data: NotificationData) {
-    const {sourceAction, targetAction} = {
-        BUY: {sourceAction: 'Bought', targetAction: 'Sold'},
-        SELL: {sourceAction: 'Sold', targetAction: 'Bought'}
-    }[data.type]
-
-    if (sourceClient.readyState === sourceClient.OPEN) {
-        sourceClient.send(`Execution: ${sourceAction} ${data.quantity} ${data.ticker} at ${data.price}`)
+function notifyClients(sourceClient: Client, targetClient: Client, data: NotificationData) {
+    const exec: ExecutionMessagePayload = {
+        type: 'execution',
+        orderType: data.type,
+        ticker: data.ticker,
+        quantity: data.quantity,
+        price: data.price,
     }
 
-    if (targetClient.readyState === targetClient.OPEN) {
-        targetClient.send(`Execution: ${targetAction} ${data.quantity} ${data.ticker} at ${data.price}`)
-    }
+    sendMessage(sourceClient, exec)
+    sendMessage(targetClient, exec)
 }
 
 function getPriceForExecution(ticker: string): number {

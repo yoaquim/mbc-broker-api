@@ -15,12 +15,12 @@ describe('Ticker Simulator', () => {
             OPEN: 1,
         } as unknown as WebSocket & { send: jest.Mock; readyState: number; OPEN: number }
 
-        subscribeClient('TSLA', ws)
+        subscribeClient('TSLA', {ws, id: '111'})
     })
 
     afterEach(() => {
         jest.clearAllTimers()
-        removeClient(ws)
+        removeClient({ws, id: '111'})
     })
 
     it('should send ticker updates to subscribed clients', () => {

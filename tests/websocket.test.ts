@@ -34,7 +34,8 @@ describe('WebSocket Server Integration using setupWebSocketServer', () => {
         })
 
         client.on('message', (data) => {
-            expect(data.toString()).toBe('Subscribed to TSLA')
+            const msg = JSON.parse(data.toString())
+            expect(msg).toMatchObject({type: 'subscribe_ack', ticker: 'TSLA'})
             client.close()
             done()
         })
@@ -52,7 +53,8 @@ describe('WebSocket Server Integration using setupWebSocketServer', () => {
         })
 
         client.on('message', (data) => {
-            expect(data.toString()).toBe('Error: Unknown command FOO')
+            const msg = JSON.parse(data.toString())
+            expect(msg).toMatchObject({type: 'error', message: 'Unknown command FOO'})
             client.close()
             done()
         })

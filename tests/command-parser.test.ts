@@ -1,4 +1,4 @@
-import { parseCommand } from '../src/command-parser'
+import { parseCommand } from '../src/utils/command-parser'
 
 describe('parseCommand', () => {
     it('should parse a valid command with one argument', () => {

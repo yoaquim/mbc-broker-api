@@ -1,4 +1,5 @@
 import { getSubscribedClients, getSubscribedTickers } from './subscription-manager'
+import { sendMessage } from './utils/messenger'
 
 interface TickerData {
     timestamp: number;
@@ -22,10 +23,9 @@ export function startTickerSimulator(interval: number = 1000): void {
         tickers.forEach((ticker) => {
             const data = generateRandomTickerData(ticker)
             const clients = getSubscribedClients(ticker)
-            const message = JSON.stringify(data)
             clients.forEach((client) => {
-                if (client.readyState === client.OPEN) {
-                    client.send(message)
+                if (client.ws.readyState === client.ws.OPEN) {
+                    sendMessage(client, {type: 'ticker', ...data})
                 }
             })
         })
