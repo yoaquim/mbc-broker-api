@@ -14,8 +14,8 @@ The API supports:
 
 ## Approach
 
-- **WebSocket Communication:** Clients connect via WebSockets to receive live market data and order notifications.
-- **Order Matching Engine:** A simple First-In-First-Out (FIFO) matching algorithm processes orders. The design is modular to allow for future, more complex matching algorithms.
+- **WebSocket Communication:** Clients connect via WebSockets to receive live (dummy) market data and order notifications.
+- **Order Matching Engine:** A simple First-In-First-Out (FIFO) matching algorithm processes orders. The design is modular and should allow for future, more complex matching algorithms.
 - **Client Management:** Each client connection is assigned a unique ID (using a dedicated client manager module), which is used in all logs and messages.
 - **Logging & Messaging:** Outgoing messages are sent through a centralized `sendMessage` function that formats messages consistently, complete with timestamps and the client ID, when available.
 - **Ticker Simulator:** Simulated market data is broadcast to subscribed clients.
@@ -24,7 +24,7 @@ The API supports:
 
 ### Prerequisites
 
-- Docker and the Docker-provided `docker compose` (not the deprecated python `docker-compose`) must be installed on your system.
+Docker and the Docker-provided `docker compose` (not the deprecated python `docker-compose`) must be installed on your system.
 
 ### Building the Image
 
@@ -41,6 +41,8 @@ Start the development server (with hot reloading and live code mounts) by runnin
 ```bash
 docker compose up app
 ```
+
+The application will start up on http://localhost:3000 or whatever the `PORT` environment variable is set to.
 
 ### Running Tests
 

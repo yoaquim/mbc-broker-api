@@ -1,7 +1,7 @@
-import { Execution, MatchingEngineType, Order } from '@/types'
+import { Execution, MatchingEngine, MatchingEngineType, Order } from '@/types'
 import { FifoMatchingEngine } from '@/matching-engines/fifo-matching-engine'
 
-const ENGINES: Record<MatchingEngineType, FifoMatchingEngine> = {
+const ENGINES: Record<MatchingEngineType, MatchingEngine> = {
     FIFO: new FifoMatchingEngine(),
 }
 
