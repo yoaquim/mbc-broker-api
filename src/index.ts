@@ -1,4 +1,3 @@
-// src/index.ts
 import express from 'express'
 import { setupWebSocketServer } from './websocket'
 import { startTickerSimulator } from './ticker-simulator'
@@ -6,10 +5,9 @@ import { startTickerSimulator } from './ticker-simulator'
 const app = express()
 const PORT = process.env.PORT || 3000
 
-app.get('/', (req, res) => {
-    res.send('Welcome to the Broker API')
+app.get('/health', (req, res) => {
+    res.status(200).json({status: 'OK'})
 })
 
-startTickerSimulator(1000)
-
+startTickerSimulator()
 setupWebSocketServer(app, Number(PORT))

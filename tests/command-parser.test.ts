@@ -22,7 +22,6 @@ describe('parseCommand', () => {
     it('should handle an empty string', () => {
         const input = ''
         const result = parseCommand(input)
-        // Note: because "".trim() is "" and "".split(/\s+/) returns [""] we get { type: "", args: [] }
         expect(result).toEqual({type: '', args: []})
     })
 

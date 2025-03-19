@@ -1,10 +1,10 @@
 import WebSocket, { Server as WebSocketServer } from 'ws'
 import http from 'http'
 import express from 'express'
-import { handleBuy, handleSell, handleSubscribe, handleUnsubscribe } from './command-handlers'
 import { parseCommand } from './command-parser'
+import { handleBuy, handleSell, handleSubscribe, handleUnsubscribe } from './command-handlers'
 
-export function setupWebSocketServer(app: express.Application, port: number): WebSocketServer {
+export function setupWebSocketServer(app: express.Application, port: number): { wss: WebSocketServer, server: http.Server } {
     const server = http.createServer(app)
     const wss = new WebSocketServer({server})
 
@@ -44,5 +44,5 @@ export function setupWebSocketServer(app: express.Application, port: number): We
 
     server.listen(port, () => console.log(`Server is listening on port ${port}`))
 
-    return wss
+    return {wss, server}
 }
