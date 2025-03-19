@@ -1,10 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import WebSocket from 'ws'
-
-export interface Client {
-    id: string;
-    ws: WebSocket;
-}
+import { Client } from '@/types'
 
 const CLIENTS = new Map<WebSocket, Client>()
 

@@ -1,7 +1,19 @@
 import { createLogger, format, transports } from 'winston'
 
+const customTimestamp = format((info) => {
+    const date = new Date()
+    const utcDate = new Date(date.toUTCString())
+    const month = String(utcDate.getUTCMonth() + 1).padStart(2, '0')
+    const day = String(utcDate.getUTCDate()).padStart(2, '0')
+    const year = utcDate.getUTCFullYear()
+    const hours = String(utcDate.getUTCHours()).padStart(2, '0')
+    const minutes = String(utcDate.getUTCMinutes()).padStart(2, '0')
+    info.timestamp = `${month}-${day}-${year} ${hours}:${minutes}`
+    return info
+})
+
 const baseFormat = format.combine(
-    format.timestamp({format: 'HH:mm:ss'}),
+    customTimestamp(),
     format.printf(info => {
         const clientStr = info.client ? `[CLIENT ${info.client}] : ` : ''
         return `[${info.level.toUpperCase()}] ${info.timestamp} | ${clientStr}${info.message}`

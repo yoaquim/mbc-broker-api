@@ -1,6 +1,6 @@
-import { parseCommand } from '../src/utils/command-parser'
+import { parseCommand } from '@/utils/command-parser'
 
-describe('parseCommand', () => {
+describe('Command Parser', () => {
     it('should parse a valid command with one argument', () => {
         const input = 'SUBSCRIBE TSLA'
         const result = parseCommand(input)

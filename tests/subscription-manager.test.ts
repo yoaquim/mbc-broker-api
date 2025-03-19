@@ -1,5 +1,5 @@
 import type { WebSocket } from 'ws'
-import { Client } from '../src/client-manager'
+import { Client } from '@/types'
 
 describe('Subscription Manager', () => {
     let subscribeClient: (ticker: string, client: Client) => void
@@ -16,7 +16,7 @@ describe('Subscription Manager', () => {
     beforeEach(async () => {
         // Reset the module cache so that each test gets a fresh copy of subscriptionManager.
         jest.resetModules()
-        const subscriptionManager = await import('../src/subscription-manager')
+        const subscriptionManager = await import('@/managers/subscription-manager')
         subscribeClient = subscriptionManager.subscribeClient
         unsubscribeClient = subscriptionManager.unsubscribeClient
         getSubscribedClients = subscriptionManager.getSubscribedClients

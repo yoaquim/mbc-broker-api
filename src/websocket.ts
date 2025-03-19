@@ -1,11 +1,13 @@
 import WebSocket, { Server as WebSocketServer } from 'ws'
 import http from 'http'
 import express from 'express'
-import { logger, getClientLogger } from './utils/logger'
-import { sendMessage } from './utils/messenger'
-import { parseCommand } from './utils/command-parser'
-import { handleBuy, handleSell, handleSubscribe, handleUnsubscribe } from './command-handlers'
-import { addClient, Client } from './client-manager'
+import { logger, getClientLogger } from '@/utils/logger'
+import { sendMessage } from '@/utils/messenger'
+import { parseCommand } from '@/utils/command-parser'
+import { handleBuy, handleSell, handleSubscribe, handleUnsubscribe } from '@/command-handlers'
+import { addClient, removeClient } from '@/managers/client-manager'
+import { Client } from '@/types'
+import { unsubscribeAll } from '@/managers/subscription-manager'
 
 export function setupWebSocketServer(app: express.Application, port: number): { wss: WebSocketServer, server: http.Server } {
     const server = http.createServer(app)
@@ -16,8 +18,6 @@ export function setupWebSocketServer(app: express.Application, port: number): { 
         const clientLogger = getClientLogger(client.id)
         clientLogger.info('Client connected')
 
-        ws.on('close', () => logger.info(`[CLIENT - ${client.id}] | Client disconnected`))
-        ws.on('error', (err) => logger.error(`[CLIENT - ${client.id}] | WebSocket error: ${err.message}.`))
         ws.on('message', (data: WebSocket.Data) => {
             const message = data.toString()
             clientLogger.info(`RECEIVED MESSAGE → ${message}`)
@@ -48,6 +48,13 @@ export function setupWebSocketServer(app: express.Application, port: number): { 
             }
         })
 
+        ws.on('close', () => {
+            clientLogger.info('Client disconnected')
+            removeClient(ws)
+            unsubscribeAll(client)
+        })
+
+        ws.on('error', (err) => logger.error(`WebSocket error: ${err.message}`))
     })
 
     server.listen(port, () => logger.info(`SERVER STARTED ON PORT ${port}`))

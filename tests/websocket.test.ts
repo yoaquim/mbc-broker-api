@@ -1,9 +1,9 @@
 import express from 'express'
 import http from 'http'
 import WebSocket from 'ws'
-import { setupWebSocketServer } from '../src/websocket'
+import { setupWebSocketServer } from '@/websocket'
 
-describe('WebSocket Server Integration using setupWebSocketServer', () => {
+describe('WebSocket Server', () => {
     let app: express.Application
     let wss: WebSocket.Server
     let server: http.Server

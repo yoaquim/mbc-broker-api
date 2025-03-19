@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid'
-import { sendMessage } from './utils/messenger'
-import { Client } from './client-manager'
-import { subscribeClient, unsubscribeClient } from './subscription-manager'
-import { Order, OrderType, processOrder } from './order-matching'
+import { sendMessage } from '@/utils/messenger'
+import { Client, Order, OrderType } from '@/types'
+import { subscribeClient, unsubscribeClient } from '@/managers/subscription-manager'
+import { processOrder } from '@/order-processor'
 
 function executeCommand(type: OrderType, client: Client, commandArgs: string[]) {
     if (commandArgs.length < 2) {

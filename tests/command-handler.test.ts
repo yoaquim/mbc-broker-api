@@ -1,13 +1,13 @@
-import { Client } from '../src/client-manager'
+import { Client } from '@/types'
 
-jest.mock('../src/subscription-manager', () => ({
+jest.mock('@/managers/subscription-manager', () => ({
     subscribeClient: jest.fn(),
     unsubscribeClient: jest.fn()
 }))
 
 import { WebSocket } from 'ws'
-import { handleSubscribe, handleUnsubscribe, handleBuy, handleSell } from '../src/command-handlers'
-import { subscribeClient, unsubscribeClient } from '../src/subscription-manager'
+import { handleSubscribe, handleUnsubscribe, handleBuy, handleSell } from '@/command-handlers'
+import { subscribeClient, unsubscribeClient } from '@/managers/subscription-manager'
 
 describe('Command Handlers', () => {
     let ws: WebSocket & { send: jest.Mock }
@@ -32,7 +32,7 @@ describe('Command Handlers', () => {
 
         it('should subscribe client when ticker is provided', () => {
             handleSubscribe(['tsla'], client)
-            expect(subscribeClient).toHaveBeenCalledWith('TSLA',client)
+            expect(subscribeClient).toHaveBeenCalledWith('TSLA', client)
             const sent = JSON.parse(ws.send.mock.calls[0][0])
             expect(sent).toMatchObject({type: 'subscribe_ack', ticker: 'TSLA'})
         })

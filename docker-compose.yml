@@ -1,12 +1,32 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      target: dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+
+  test:
+    build:
+      context: .
+      target: dev
+    command: npm test
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+
+  prod:
+    build:
+      context: .
+      target: prod
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-  test:
-    build: .
-    command: npm test
-    profiles:
-      - test

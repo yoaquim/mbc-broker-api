@@ -1,6 +1,6 @@
-import { startTickerSimulator } from '../src/ticker-simulator'
-import { subscribeClient, removeClient } from '../src/subscription-manager'
 import { WebSocket } from 'ws'
+import { startTickerSimulator } from '@/ticker-simulator'
+import { subscribeClient, removeClient } from '@/managers/subscription-manager'
 
 jest.useFakeTimers()
 

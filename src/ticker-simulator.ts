@@ -1,12 +1,6 @@
-import { getSubscribedClients, getSubscribedTickers } from './subscription-manager'
-import { sendMessage } from './utils/messenger'
-
-interface TickerData {
-    timestamp: number;
-    quantity: number;
-    symbol: string;
-    price: number;
-}
+import { getSubscribedClients, getSubscribedTickers } from '@/managers/subscription-manager'
+import { sendMessage } from '@/utils/messenger'
+import { TickerData } from '@/types'
 
 function generateRandomTickerData(ticker: string): TickerData {
     return {

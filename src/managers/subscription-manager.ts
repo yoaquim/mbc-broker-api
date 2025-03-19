@@ -1,4 +1,4 @@
-import { Client } from './client-manager'
+import { Client } from '@/types'
 
 const SUBSCRIPTIONS: Map<string, Set<Client>> = new Map()
 
@@ -18,6 +18,17 @@ export function unsubscribeClient(ticker: string, client: Client): void {
             SUBSCRIPTIONS.delete(key)
         }
     }
+}
+
+export function unsubscribeAll(client: Client): void {
+    SUBSCRIPTIONS.forEach((clients, ticker) => {
+        if (clients.has(client)) {
+            clients.delete(client)
+            if (clients.size === 0) {
+                SUBSCRIPTIONS.delete(ticker)
+            }
+        }
+    })
 }
 
 export function getSubscribedClients(ticker: string): Set<Client> {

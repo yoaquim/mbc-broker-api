@@ -1,7 +1,8 @@
 import WebSocket from 'ws'
-import { processOrder, Order } from '../src/order-matching'
+import { processOrder } from '@/order-processor'
+import { Order } from '@/types'
 
-describe('Order Matching Module', () => {
+describe('Order Processor', () => {
     let buyerWs: WebSocket
     let sellerWs: WebSocket
 
